@@ -3,6 +3,7 @@ import sys
 from sys import platform
 
 from taskpresenter import TaskPresenter
+from psychopy import gui
 
 def check_platform():
 
@@ -11,6 +12,7 @@ def check_platform():
     elif platform == "darwin":
         return "osx"
     elif platform == "win32":
+        print("Hello")
         return "win"
 
 
@@ -96,21 +98,40 @@ def main(sub_id, session_num, marking, exper_tmp_file_name="mindfulness.csv"):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if len(sys.argv) == 4:
-            main(sys.argv[1], sys.argv[2], sys.argv[3])
-        elif len(sys.argv) == 5:
-            main(sys.argv[1], sys.argv[2], sys.argv[3],
-                 exper_tmp_file_name=sys.argv[4])
-        elif len(sys.argv) == 3:
-            print("Marking Set to False.")
-            print("No Template File given. "
-                  "Using default: 'mindfulness.csv' template file.")
-            main(sys.argv[1], sys.argv[2], marking="f")
-        else:
-            raise AttributeError("Invalid number of command line args. Provide "
-                                 "both subject ID and session number.")
+
+    myDlg = gui.Dlg(title="Mindfulness experiment")
+    myDlg.addText('Subject info')
+    myDlg.addField('Participant ID:', '1234')
+
+    myDlg.addText('Experiment Info')
+    myDlg.addField('Session Number:', 0)
+    myDlg.addField('Group:', choices=["Treatment", "Control"])
+    ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
+    if myDlg.OK:  # or if ok_data is not None
+        print(ok_data)
     else:
-        print("No arguments given - please refer to documentation "
-              "'Command Line Interface'")
-        sys.exit()
+        print('user cancelled')
+        
+    main(ok_data[0], str(ok_data[1]), "no")
+    
+    
+#    if len(sys.argv) > 1:
+#        print("Hello")
+#        if len(sys.argv) == 4:
+#            main(sys.argv[1], sys.argv[2], sys.argv[3])
+#        elif len(sys.argv) == 5:
+#            main(sys.argv[1], sys.argv[2], sys.argv[3],
+#                 exper_tmp_file_name=sys.argv[4])
+#        elif len(sys.argv) == 3:
+#            print("Marking Set to False.")
+#            print("No Template File given. "
+#                  "Using default: 'mindfulness.csv' template file.")
+#            main(sys.argv[1], sys.argv[2], marking="f")
+#        else:
+#            raise AttributeError("Invalid number of command line args. Provide "
+#                                 "both subject ID and session number.")
+#    else:
+#        print("No arguments given - please refer to documentation "
+#              "'Command Line Interface'")
+#        sys.exit()
+#
