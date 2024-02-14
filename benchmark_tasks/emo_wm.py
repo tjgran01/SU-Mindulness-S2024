@@ -23,7 +23,7 @@ def run_trial(tp, trials, data, block):
     img_dir = "./trial_sheets/stims/oasis/images/"
 
     if tp.rand_select:
-        trials = tp.select_trials(trials, block)
+        trials = tp.select_trials(trials, block, n_trials=10)
     if tp.marking:
         tp.send_mark("task_start")
 

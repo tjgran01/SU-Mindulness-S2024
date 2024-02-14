@@ -129,11 +129,9 @@ nb = {
               "time a sequence of letters will be displayed to you.  The letters "
               "will appear one at a time, and will be displayed for a few seconds.",
               "Your goal during this task is to determine if the letter currently "
-              "displayed on the screen appeared on the screen a set amount of letters before. "
-              "(either 1, 2, or 3). You will be informed of the number of letters back "
-              "before beginning the task.", "If you are asked to perform a 1-BACK: your goal "
-              "is to press the RIGHT arrow key if the letter currently displayed "
-              "on screen matches the letter before it, or press the LEFT arrow key if the "
+              "displayed on the screen appeared on the screen 2 screens before. ",
+              "Your goal is to press the RIGHT arrow key if the letter currently displayed "
+              "on screen matches the letter 2 screens before it, or press the LEFT arrow key if the "
               "letter does not match.", "If you are asked to perform a 2-BACK: your goal is to "
               "press the RIGHT arrow key if the letter currently displayed on screen "
               "matches the letter that was shown two letters before the current letter, "
