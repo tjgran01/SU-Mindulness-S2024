@@ -5,6 +5,42 @@ from sys import platform
 from taskpresenter import TaskPresenter
 from psychopy import gui
 
+
+def get_dialogue_data(err="None"):
+
+    first_dialogue = gui.Dlg(title="Mindfuless Experiment")
+    first_dialogue.addField('Is this a practice session?', True)
+
+    first_dialogue.addField('Is this a dev session?', False)
+
+    practice = first_dialogue.show()
+    
+    if practice[0]:
+        return ["1234", 1, "Control"]
+    if practice[1]:
+        return ["9876", 1, "Control"]
+
+    myDlg = gui.Dlg(title="Mindfulness experiment")
+
+    if err == "None":
+        myDlg.addText(f'Error with previous entry (try again): {err}')
+
+    myDlg.addText('Subject info')
+    myDlg.addField('Participant ID:', '1234')
+
+    myDlg.addText('Experiment Info')
+    myDlg.addField('Session Number:', 0)
+    myDlg.addField('Group:', choices=["Treatment", "Control"])
+    ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
+    if myDlg.OK:  # or if ok_data is not None
+        print(ok_data)
+    else:
+        print('user cancelled')
+        sys.exit()
+
+    return ok_data
+
+
 def check_platform():
 
     if platform == "linux" or platform == "linux2":
@@ -44,6 +80,7 @@ def get_task_template(sub_id, session_num, exper_tmp_file_name):
     f_path = f"./templates/exper_temps/{exper_tmp_file_name}"
 
     table = pd.read_csv(f_path)
+    print(table)
     table = table[(table["subject_id"] == int(sub_id))
                   & (table["session_num"] == int(session_num))]
     print(table)
@@ -70,11 +107,12 @@ def main(sub_id, session_num, marking, exper_tmp_file_name="mindfulness.csv"):
     platform = check_platform()
     check_cmd_line_session_info(sub_id, session_num)
     temp_num = get_task_template(sub_id, session_num, exper_tmp_file_name)
+    print(temp_num)
 
     try:
         ### Remove Zero When Done Testing
         template_file = pd.read_csv(f"./templates/{exper_tmp_file_name[:-4]}"
-                                    f"/{exper_tmp_file_name[:-4]}5.csv")
+                                    f"/{exper_tmp_file_name[:-4]}{temp_num}.csv")
     except FileNotFoundError as e:
         print(e)
         print(f"Either the file ./templates/mndful_template{temp_num}.csv"
@@ -99,39 +137,11 @@ def main(sub_id, session_num, marking, exper_tmp_file_name="mindfulness.csv"):
 
 if __name__ == "__main__":
 
-    myDlg = gui.Dlg(title="Mindfulness experiment")
-    myDlg.addText('Subject info')
-    myDlg.addField('Participant ID:', '1234')
+    err = "None"
+    while True:
+        ok_data = get_dialogue_data(err=err)
+        if ok_data:
+            break
 
-    myDlg.addText('Experiment Info')
-    myDlg.addField('Session Number:', 0)
-    myDlg.addField('Group:', choices=["Treatment", "Control"])
-    ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
-    if myDlg.OK:  # or if ok_data is not None
-        print(ok_data)
-    else:
-        print('user cancelled')
         
     main(ok_data[0], str(ok_data[1]), "no")
-    
-    
-#    if len(sys.argv) > 1:
-#        print("Hello")
-#        if len(sys.argv) == 4:
-#            main(sys.argv[1], sys.argv[2], sys.argv[3])
-#        elif len(sys.argv) == 5:
-#            main(sys.argv[1], sys.argv[2], sys.argv[3],
-#                 exper_tmp_file_name=sys.argv[4])
-#        elif len(sys.argv) == 3:
-#            print("Marking Set to False.")
-#            print("No Template File given. "
-#                  "Using default: 'mindfulness.csv' template file.")
-#            main(sys.argv[1], sys.argv[2], marking="f")
-#        else:
-#            raise AttributeError("Invalid number of command line args. Provide "
-#                                 "both subject ID and session number.")
-#    else:
-#        print("No arguments given - please refer to documentation "
-#              "'Command Line Interface'")
-#        sys.exit()
-#

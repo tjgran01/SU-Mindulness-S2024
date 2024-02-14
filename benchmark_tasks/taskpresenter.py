@@ -394,14 +394,10 @@ class TaskPresenter():
 
 # Trial Selection / Modulation Methods -----------------------------------------
 
-    def select_trials(self, trials, block):
-
-        # print(trials)
-        # print(block)
-        # print(trials["block"])
+    def select_trials(self, trials, block, n_trials=20):
 
         trials = trials[trials["block"].isin(block)].reset_index()
-        selected = np.random.choice(trials.index.values, self.n_trials)
+        selected = np.random.choice(trials.index.values, n_trials)
         print(selected)
         sampled_trials = trials.iloc[selected]
         return sampled_trials

@@ -43,11 +43,11 @@ def run_trial(tp, trials, data, block):
 
             # stim displayed
             if trial[1]["display_item"] == "Go":
-                stim = visual.Rect(tp.win, width=.5, height=.5, fillColor="red",
-                                   lineColor="red")
+                stim = visual.Rect(tp.win, width=.5, height=.5, fillColor=[191 / 255, 23 / 255, 37 / 255],
+                                   lineColor=[204 / 255, 57 / 255, 69 / 255])
             elif trial[1]["display_item"] == "No":
-                stim = visual.Circle(tp.win, radius=0.5, edges=32, fillColor="blue",
-                                     lineColor="blue")
+                stim = visual.Circle(tp.win, radius=0.5, edges=32, fillColor=[23 / 255, 37 / 255, 191 / 255],
+                                     lineColor=[23 / 255, 37 / 255, 191 / 255])
             stim.draw()
             tp.win.flip()
             timer = core.Clock()
