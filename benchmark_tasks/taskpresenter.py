@@ -286,7 +286,8 @@ class TaskPresenter():
 
         dir_strs = {"rt": "reaction_time", "gng": "go_no_go",
                     "es": "emo_stroop", "nb": "n_back", 
-                    "ewm": "emotional_working_memory"}
+                    "ewm": "emotional_working_memory",
+                    "cr": "controlled_rest"}
         
         return dir_strs[self.task]
 
