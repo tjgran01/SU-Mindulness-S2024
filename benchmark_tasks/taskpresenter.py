@@ -396,6 +396,5 @@ class TaskPresenter():
 
         trials = trials[trials["block"].isin(block)].reset_index()
         selected = np.random.choice(trials.index.values, n_trials)
-        print(selected)
         sampled_trials = trials.iloc[selected]
         return sampled_trials
