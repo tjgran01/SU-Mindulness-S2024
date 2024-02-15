@@ -31,7 +31,7 @@ def run_trial(tp, trials, data, block):
 
     if tp.rand_select:
         trials = tp.select_trials(trials, block)
-    if tp.marking:
+    :
         tp.send_mark("task_start")
 
     for i, trial in enumerate(trials.iterrows()):
@@ -45,7 +45,7 @@ def run_trial(tp, trials, data, block):
             draw_focus(tp.win, trial[1]["focus_time"])
 
             if event.getKeys(keyList=None):
-                if tp.marking:
+                :
                     tp.send_mark("too_early")
                 data.append([i + 1, -1, "Incorrect",
                                 trial[1]["display_item"], prac_trial,
@@ -65,7 +65,7 @@ def run_trial(tp, trials, data, block):
                 if trial[1]['word_color'] == "r":
 
                     if event.getKeys(keyList="left"):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_cor")
                         data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         trial[1]["display_item"], prac_trial,
@@ -74,7 +74,7 @@ def run_trial(tp, trials, data, block):
                             tp.show_performance(True)
                         break
                     elif event.getKeys(keyList=["down", "right"]):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_incor")
                         data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         trial[1]["display_item"], prac_trial,
@@ -86,7 +86,7 @@ def run_trial(tp, trials, data, block):
                 elif trial[1]['word_color'] == "g":
 
                     if event.getKeys(keyList="down"):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_cor")
                         data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         trial[1]["display_item"], prac_trial,
@@ -95,7 +95,7 @@ def run_trial(tp, trials, data, block):
                             tp.show_performance(True)
                         break
                     elif event.getKeys(keyList=["left", "right"]):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_incor")
                         data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         trial[1]["display_item"], prac_trial,
@@ -107,7 +107,7 @@ def run_trial(tp, trials, data, block):
                 elif trial[1]['word_color'] == "b":
 
                     if event.getKeys(keyList="right"):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_cor")
                         data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         trial[1]["display_item"], prac_trial,
@@ -116,7 +116,7 @@ def run_trial(tp, trials, data, block):
                             tp.show_performance(True)
                         break
                     elif event.getKeys(keyList=["down", "left"]):
-                        if tp.marking:
+                        :
                             tp.send_mark("resp_incor")
                         data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         trial[1]["display_item"], prac_trial,
@@ -124,7 +124,7 @@ def run_trial(tp, trials, data, block):
                         if trial[1]["block"] == 0:
                             tp.show_performance(False)
                         break
-    if tp.marking:
+    :
         tp.send_mark("task_end")
     return data
 

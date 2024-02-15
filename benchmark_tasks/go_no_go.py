@@ -18,8 +18,8 @@ def run_trial(tp, trials, data, block):
 
     if tp.rand_select:
         trials = tp.select_trials(trials, block)
-    if tp.marking:
-        tp.send_mark("task_start")
+
+    tp.send_mark("task_start")
 
     for i, trial in enumerate(trials.iterrows()):
         if trial[1]["block"] in block:
@@ -33,8 +33,7 @@ def run_trial(tp, trials, data, block):
 
             # if participant goes to early.
             if event.getKeys(keyList="space"):
-                if tp.marking:
-                    tp.send_mark("too_early")
+                tp.send_mark("too_early")
                 data.append([i + 1, -1, "Incorrect",
                             trial[1]["display_item"], prac_trial, trial[1]["block"]])
                 if trial[1]["block"] == 0:
@@ -51,22 +50,19 @@ def run_trial(tp, trials, data, block):
             stim.draw()
             tp.win.flip()
             timer = core.Clock()
-            if tp.marking:
-                tp.send_mark("trial_start")
+            tp.send_mark("trial_start")
             while timer.getTime() < 2:
 
                 if event.getKeys(keyList="space"):
                     if trial[1]["display_item"] == "Go":
-                        if tp.marking:
-                            tp.send_mark("resp_cor")
+                        tp.send_mark("resp_cor")
                         data.append([i + 1, timer.getTime() * 1000, "Correct",
                                     trial[1]["display_item"], prac_trial, trial[1]["block"]])
                         if trial[1]["block"] == 0:
                             tp.show_performance(True)
                         break
                     elif trial[1]["display_item"] == "No":
-                        if tp.marking:
-                            tp.send_mark("resp_incor")
+                        tp.send_mark("resp_incor")
                         data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                     trial[1]["display_item"], prac_trial, trial[1]["block"]])
                         if trial[1]["block"] == 0:
@@ -75,23 +71,20 @@ def run_trial(tp, trials, data, block):
                     print(trial[1]["display_item"])
 
             if timer.getTime() >= 2 and trial[1]["display_item"] == "Go":
-                if tp.marking:
-                    tp.send_mark("resp_incor")
+                tp.send_mark("resp_incor")
                 data.append([i + 1, 1, "Incorrect",
                             trial[1]["display_item"], prac_trial, trial[1]["block"]])
                 if trial[1]["block"] == 0:
                     tp.show_performance(False)
             if timer.getTime() >= 2 and trial[1]["display_item"] == "No":
-                if tp.marking:
-                    tp.send_mark("resp_cor")
+                tp.send_mark("resp_cor")
                 data.append([i + 1, 0, "Correct",
                             trial[1]["display_item"], prac_trial, trial[1]["block"]])
                 if trial[1]["block"] == 0:
                     tp.show_performance(True)
             timer.reset()
 
-    if tp.marking:
-        tp.send_mark("task_end")
+    tp.send_mark("task_end")
     return data
 
 

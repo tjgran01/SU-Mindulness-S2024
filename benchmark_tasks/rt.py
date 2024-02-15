@@ -18,7 +18,6 @@ def run_trial(tp, trials, rt_data, block):
 
     if tp.rand_select:
         trials = tp.select_trials(trials, block)
-    if tp.marking:
         tp.send_mark("task_start")
 
     for i, trial in enumerate(trials.iterrows()):
@@ -36,11 +35,9 @@ def run_trial(tp, trials, rt_data, block):
             if event.getKeys(keyList="space"):
                 rt_data.append([i + 1, -1, "Incorrect", prac, trial[1]["block"]])
                 if trial[1]["block"] == 0:
-                    if tp.marking:
-                        tp.send_mark("too_early")
+                    tp.send_mark("too_early")
                     tp.show_performance(False, too_early=True)
                 continue
-            if tp.marking:
                 tp.send_mark("trial_start")
 
             # Draw Stim
@@ -52,22 +49,19 @@ def run_trial(tp, trials, rt_data, block):
             # Wait for response.
             while timer.getTime() < 5:
                 if event.getKeys(keyList="space"):
-                    if tp.marking:
-                        tp.send_mark("resp_cor")
+                    tp.send_mark("resp_cor")
                     rt_data.append([i + 1, timer.getTime() * 1000, "Correct",
                                     prac, trial[1]["block"]])
                     if trial[1]["block"] == 0:
                         tp.show_performance(True)
                     break
             if timer.getTime() >= 5:
-                if tp.marking:
-                    tp.send_mark("resp_incor")
+                tp.send_mark("resp_incor")
                 rt_data.append([i + 1, 1, "Incorrect", prac, trial[1]["block"]])
                 if trial[1]["block"] == 0:
                         tp.show_performance(False)
             timer.reset()
 
-    if tp.marking:
         tp.send_mark("task_end")
     return rt_data
 

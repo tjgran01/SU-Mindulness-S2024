@@ -24,7 +24,6 @@ def run_trial(tp, trials, data, block):
 
     if tp.rand_select:
         trials = tp.select_trials(trials, block, n_trials=10)
-    if tp.marking:
         tp.send_mark("task_start")
 
     for i, trial in enumerate(trials.iterrows()):
@@ -60,8 +59,7 @@ def run_trial(tp, trials, data, block):
 
             # Display Prompt:
             for letter in [trial[1]["q_1"], trial[1]["q_2"], trial[1]["q_3"]]:
-                if tp.marking:
-                    tp.send_mark("trial_start")
+                tp.send_mark("trial_start")
 
                 prompt_text = f"Was: {letter.upper()} \n in the array?"
                 prompt = visual.TextStim(tp.win,
@@ -75,8 +73,7 @@ def run_trial(tp, trials, data, block):
                         # True Positive Response.
                         if letter.upper() in let_array:
                             # should make this a method of TP.
-                            if tp.marking:
-                                tp.send_mark("resp_cor")
+                            tp.send_mark("resp_cor")
                             data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         "True Positive", "True Postive",
                                         prac, trial[1]["block"]])
@@ -85,8 +82,7 @@ def run_trial(tp, trials, data, block):
                             break
                         # False Positive Response.
                         else:
-                            if tp.marking:
-                                tp.send_mark("resp_incor")
+                            tp.send_mark("resp_incor")
                             data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         "True Negative", "False Positive",
                                         prac, trial[1]["block"]])
@@ -97,8 +93,7 @@ def run_trial(tp, trials, data, block):
                     if event.getKeys(keyList="left"):
                         # True Negative Response
                         if letter.upper() not in let_array:
-                            if tp.marking:
-                                tp.send_mark("resp_cor")
+                            tp.send_mark("resp_cor")
                             data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         "True Negative", "True Negative",
                                         prac, trial[1]["block"]])
@@ -107,8 +102,7 @@ def run_trial(tp, trials, data, block):
                             break
                         # False Negative Response.
                         else:
-                            if tp.marking:
-                                tp.send_mark("resp_incor")
+                            tp.send_mark("resp_incor")
                             data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         "True Positive", "False Negative",
                                         prac, trial[1]["block"]])
@@ -123,8 +117,8 @@ def run_trial(tp, trials, data, block):
                         tp.show_performance(False)
 
                 timer.reset()
-    if tp.marking:
-        tp.send_mark("task_end")
+
+    tp.send_mark("task_end")
     return(data)
 
 def main(tp=None, templated=False, **kwargs):

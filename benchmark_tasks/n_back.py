@@ -28,7 +28,7 @@ def run_trial(tp, trials, data, block, aud=False):
     # rather than running through the trials directly.
     if tp.rand_select:
         trials = tp.select_trials(trials, block)
-    if tp.marking:
+
         tp.send_mark("task_start")
 
     # Holds the values to check if value was n presentations back.
@@ -55,8 +55,7 @@ def run_trial(tp, trials, data, block, aud=False):
 
             # If the participant responds during focus time.
             if event.getKeys(keyList=["left", "right"]):
-                if tp.marking:
-                    tp.send_mark("too_early")
+                tp.send_mark("too_early")
                 data.append([i + 1, -1, "Incorrect", "None", "Too Early",
                             prac, trial[1]["block"]])
                 if trial[1]["block"] == 0:
@@ -66,8 +65,7 @@ def run_trial(tp, trials, data, block, aud=False):
             stims.append(stim_text)
 
             # while times.getTime() < trial[1]["disp_time"]:
-            if tp.marking:
-                tp.send_mark("trial_start")
+            tp.send_mark("trial_start")
 
             # Draw the stims - store stim in 'stims' list.
             if aud:
@@ -88,8 +86,7 @@ def run_trial(tp, trials, data, block, aud=False):
                     if event.getKeys(keyList="right"):
                         # True Positive Response.
                         if stims[i - n_back_num] == stim_text:
-                            if tp.marking:
-                                tp.send_mark("resp_cor")
+                            tp.send_mark("resp_cor")
                             data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         "True Positive", "True Postive",
                                         prac, trial[1]["block"]])
@@ -98,8 +95,7 @@ def run_trial(tp, trials, data, block, aud=False):
                             break
                         # False Positive Response.
                         else:
-                            if tp.marking:
-                                tp.send_mark("resp_incor")
+                            tp.send_mark("resp_incor")
                             data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         "True Negative", "False Positive",
                                         prac, trial[1]["block"]])
@@ -110,8 +106,7 @@ def run_trial(tp, trials, data, block, aud=False):
                     if event.getKeys(keyList="left"):
                         # True Negative Response.
                         if stims[i - n_back_num] != stim_text:
-                            if tp.marking:
-                                tp.send_mark("resp_cor")
+                            tp.send_mark("resp_cor")
                             data.append([i + 1, timer.getTime() * 1000, "Correct",
                                         "True Negative", "True Negative",
                                         prac, trial[1]["block"]])
@@ -120,8 +115,7 @@ def run_trial(tp, trials, data, block, aud=False):
                             break
                         # False Negative Response.
                         else:
-                            if tp.marking:
-                                tp.send_mark("resp_incor")
+                            tp.send_mark("resp_incor")
                             data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                         "True Positive", "False Negative",
                                         prac, trial[1]["block"]])
@@ -131,8 +125,7 @@ def run_trial(tp, trials, data, block, aud=False):
                 # Start of trial there are no trials to compare.
                 else:
                     if event.getKeys(keyList="left"):
-                        if tp.marking:
-                            tp.send_mark("resp_cor")
+                        tp.send_mark("resp_cor")
                         data.append([i + 1, timer.getTime() * 1000, "Correct",
                                     "True Negative", "True Negative",
                                     prac, trial[1]["block"]])
@@ -140,8 +133,7 @@ def run_trial(tp, trials, data, block, aud=False):
                             tp.show_performance(True)
                         break
                     if event.getKeys(keyList="right"):
-                        if tp.marking:
-                            tp.send_mark("resp_incor")
+                        tp.send_mark("resp_incor")
                         data.append([i + 1, timer.getTime() * 1000, "Incorrect",
                                     "True Negative", "False Positive",
                                     prac, trial[1]["block"]])
@@ -157,8 +149,7 @@ def run_trial(tp, trials, data, block, aud=False):
 
             timer.reset()
 
-    if tp.marking:
-        tp.send_mark("task_end")
+    tp.send_mark("task_end")
     return data
 
 def main(tp=None, templated=False, **kwargs):

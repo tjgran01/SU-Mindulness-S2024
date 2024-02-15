@@ -3,8 +3,7 @@ import pandas as pd
 import numpy as np
 import gc
 
-# my imports
-from tools.markserver import MarkServer
+from tools.lsl_wrapper import LSLSEventStreamer
 
 class TaskPresenter():
     def __init__(self, task_list=["rt"], block_list=["0"], focus="+",
@@ -26,11 +25,11 @@ class TaskPresenter():
             self.win = visual.Window(monitor="testMonitor")
         self.focus = visual.TextStim(self.win, text=focus)
 
-        if self.marking:
-            self.markserver = self.set_markserver()
         if kwargs["sub_id"] and kwargs["session_num"]:
             self.sub_id = kwargs["sub_id"]
             self.session_num = kwargs["session_num"]
+
+        self.lsl_logger = LSLSEventStreamer(str(self.sub_id))
 
         if templated:
             for indx, task in enumerate(self.task_list):
@@ -152,6 +151,7 @@ class TaskPresenter():
             instructions = self.prompts["instructions"]
 
         for prompt in instructions:
+                self.send_mark("insruction_page_turn")
                 main_text = visual.TextStim(self.win, text=prompt)
                 sub_text = visual.TextStim(self.win, text="Press any key to continue",
                                            pos=(0.0, -0.8))
@@ -367,29 +367,23 @@ class TaskPresenter():
             return True
         return False
 
-    def set_markserver(self):
-
-        ms = MarkServer()
-        return ms
-
 
     def send_mark(self, mark_type):
 
-        mark_dict = {"task_start": "A \n",
-                     "trial_start": "B \n",
-                     "resp_cor": "C \n",
-                     "resp_incor": "D \n",
-                     "too_early": "E \n",
-                     "task_end": "F \n",
-                     "rest_start": "G \n",
-                     "rest_end": "H \n"}
+        mark_dict = {"task_start": "BLOCK_START",
+                     "trial_start": "STIM_DISPLAYED",
+                     "resp_cor": "CORRECT_RESPONSE",
+                     "resp_incor": "INCORRECT_RESPONSE",
+                     "too_early": "TOO_EARLY",
+                     "task_end": "BLOCK_END",
+                     "rest_start": "REST_START",
+                     "rest_end": "REST_END",
+                     "insruction_page_turn": "PAGE_TURN"}
+        
+        print("Marking")
+        self.lsl_logger.send_event(mark_dict[mark_type], self.task)
 
-        if mark_type in mark_dict.keys():
-            return mark_dict[mark_type]
-        else:
-            mark = "J \n"
-
-        self.markserver.data_transfer(mark)
+        
 
 # Trial Selection / Modulation Methods -----------------------------------------
 

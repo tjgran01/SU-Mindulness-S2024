@@ -16,13 +16,11 @@ def run_trial(tp, rest_time):
             information
     """
 
-    if tp.marking:
-        tp.send_mark("rest_start")
+    tp.send_mark("rest_start")
 
     tp.draw_focus(focus_time=rest_time)
 
-    if tp.marking:
-        tp.send_mark("rest_end")
+    tp.send_mark("rest_end")
 
 
 def main(tp=None, templated=False, **kwargs):
